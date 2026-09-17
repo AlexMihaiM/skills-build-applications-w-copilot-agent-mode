@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { fetchResource } from '../api.js'
 
-export default function ResourceTable({ resource, title, description, columns }) {
+export default function ResourceTable({ resource, endpoint, title, description, columns }) {
   const [records, setRecords] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
 
   useEffect(() => {
     let active = true
-    fetchResource(resource)
+    fetchResource(endpoint)
       .then((data) => { if (active) { setRecords(data); setStatus('ready') } })
       .catch((requestError) => { if (active) { setError(requestError.message); setStatus('error') } })
     return () => { active = false }
-  }, [resource])
+  }, [endpoint])
 
   return (
     <section className="resource-page">
